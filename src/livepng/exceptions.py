@@ -6,3 +6,7 @@ class WrongFormatException(Exception):
 class NoFolderInspectedException(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
+
+class InvalidModelException(Exception):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
