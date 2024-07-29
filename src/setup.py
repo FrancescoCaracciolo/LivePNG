@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
   name = 'livepng',         
   packages = ['livepng'],   
-  version = '0.1',      
+  version = '0.1.2',      
   license='GGPLv3',        
   description = 'LivePNG is a format to create avatars based on PNG images with lipsync support',
   author = 'Francesco Caracciolo',
@@ -12,7 +12,7 @@ setup(
   download_url = 'https://github.com/FrancescoCaracciolo/LivePNG/archive/refs/tags/0.1.1.tar.gz',
   keywords = ['avatar', 'png', 'lipsync', 'livepng', 'anime'],
   install_requires=[            
-          'pydb',
+          'pydub',
           'pyaudio',
       ],
   classifiers=[

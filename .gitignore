@@ -3,3 +3,5 @@ __pycache__
 *.log
 test_models
 src/test.py
+dist/
+livepng.egg-info/
