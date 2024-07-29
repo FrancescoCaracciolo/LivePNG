@@ -4,16 +4,27 @@ from .exceptions import NoFolderInspectedException, WrongFormatException
 import json
 
 class ModelInspector:
-    """Inspect and image directory to create the model json"""
-    
+    """Inspect the directories and create the model json"""
+
     def __init__(self, name: str) -> None:
-        """Initialize the inspector with a given model name"""
+        """Initialize the inspector
+
+        Args:
+            name (str): name of the model
+        """
         self.name = name 
         self.json_model = None
         self.directory = None
 
     def analyze_directory(self, path: str):
-        """Analyze the model from the given path"""
+        """Analyze the model from the given path
+
+        Args:
+            path (str): path of the folder
+
+        Raises:
+            WrongFormatException: if the modle is in the wrong format
+        """
         assets_dir = os.path.join(path, constants.ASSETS_DIR_NAME)
         if not os.path.isdir(assets_dir):
             raise WrongFormatException("There is no " + constants.ASSETS_DIR_NAME + " directory in the specified path")
@@ -23,7 +34,7 @@ class ModelInspector:
         self.directory = path
     
     def __set_root_info(self):
-        """Save meta information about the model"""
+        """Set the name and the version of the model"""
         if self.json_model is None:
             return
         self.json_model["name"] = self.name
