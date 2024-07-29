@@ -14,10 +14,13 @@ Its properties are:
 - `version`: Version of LivePNG (for now only 1 is available)
 - `styles`: The list of [styles](#Styles) a model has.
 
+
 ### Styles
 A style is supposed to be a different style for a model, for example a clothes change or a different state.
 Every style has a name `style_name`, and is contained in the `assets/style_name` folder.
 Every style has at least one [expression](#Expressions).
+
+![livepng drawio](https://github.com/user-attachments/assets/fcfc6975-7cf7-44e1-a55b-c34d6765095f)
 
 
 ### Expressions
