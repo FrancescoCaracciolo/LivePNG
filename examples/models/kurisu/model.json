@@ -1,0 +1,227 @@
+{
+  "name": "kurisu",
+  "version": 1,
+  "styles": {
+    "casual": {
+      "expressions": {
+        "angry": {
+          "0": [
+            "CRS_ASB_40000800.png",
+            "CRS_ASB_40000801.png",
+            "CRS_ASB_40000802.png"
+          ],
+          "1": [
+            "CRS_ASB_40000700.png",
+            "CRS_ASB_40000701.png",
+            "CRS_ASB_40000702.png"
+          ],
+          "2": [
+            "CRS_ASA_40000800.png",
+            "CRS_ASA_40000801.png",
+            "CRS_ASA_40000802.png"
+          ],
+          "3": [
+            "CRS_ASA_40000700.png",
+            "CRS_ASA_40000701.png",
+            "CRS_ASA_40000702.png"
+          ]
+        },
+        "annoyed": {
+          "0": [
+            "CRS_ASB_40000500.png",
+            "CRS_ASB_40000501.png",
+            "CRS_ASB_40000502.png"
+          ],
+          "1": [
+            "CRS_ASB_40000400.png",
+            "CRS_ASB_40000401.png",
+            "CRS_ASB_40000402.png"
+          ],
+          "2": [
+            "CRS_ASB_40000300.png",
+            "CRS_ASB_40000301.png",
+            "CRS_ASB_40000302.png"
+          ],
+          "3": [
+            "CRS_ASA_40000500.png",
+            "CRS_ASA_40000501.png",
+            "CRS_ASA_40000502.png"
+          ],
+          "4": [
+            "CRS_ASA_40000400.png",
+            "CRS_ASA_40000401.png",
+            "CRS_ASA_40000402.png"
+          ],
+          "5": [
+            "CRS_ASA_40000300.png",
+            "CRS_ASA_40000301.png",
+            "CRS_ASA_40000302.png"
+          ]
+        },
+        "blink": {
+          "0": [
+            "CRS_ASB_40000200.png",
+            "CRS_ASB_40000201.png"
+          ],
+          "1": [
+            "CRS_ASA_40000200.png",
+            "CRS_ASA_40000201.png",
+            "CRS_ASA_40000202.png"
+          ]
+        },
+        "blush": {
+          "0": [
+            "CRS_ASC_40000200.png",
+            "CRS_ASC_40000201.png",
+            "CRS_ASC_40000202.png"
+          ],
+          "1": [
+            "CRS_ASB_40000900.png",
+            "CRS_ASB_40000901.png",
+            "CRS_ASB_40000902.png"
+          ],
+          "2": [
+            "CRS_ASA_40000900.png",
+            "CRS_ASA_40000901.png",
+            "CRS_ASA_40000902.png"
+          ]
+        },
+        "happy": {
+          "0": [
+            "CRS_ASC_40000300.png",
+            "CRS_ASC_40000301.png",
+            "CRS_ASC_40000302.png"
+          ],
+          "1": [
+            "CRS_ASB_40000600.png",
+            "CRS_ASB_40000601.png",
+            "CRS_ASB_40000602.png"
+          ],
+          "2": [
+            "CRS_ASA_40000600.png",
+            "CRS_ASA_40000601.png",
+            "CRS_ASA_40000602.png"
+          ]
+        },
+        "idle": {
+          "0": [
+            "CRS_ASC_40000500.png",
+            "CRS_ASC_40000501.png",
+            "CRS_ASC_40000502.png"
+          ],
+          "1": [
+            "CRS_ASC_40000600.png",
+            "CRS_ASC_40000601.png",
+            "CRS_ASC_40000602.png"
+          ],
+          "2": [
+            "CRS_ASC_40000100.png",
+            "CRS_ASC_40000101.png",
+            "CRS_ASC_40000102.png"
+          ],
+          "3": [
+            "CRS_ASB_40000100.png",
+            "CRS_ASB_40000101.png",
+            "CRS_ASB_40000102.png"
+          ],
+          "4": [
+            "CRS_ASA_40000100.png",
+            "CRS_ASA_40000101.png",
+            "CRS_ASA_40000102.png"
+          ]
+        }
+      }
+    },
+    "lab": {
+      "expressions": {
+        "idle": {
+          "0": [
+            "CRS_BSC_40000600.png",
+            "CRS_BSC_40000601.png",
+            "CRS_BSC_40000602.png"
+          ],
+          "1": [
+            "CRS_BSC_40000402.png",
+            "CRS_BSC_40000500.png",
+            "CRS_BSC_40000501.png"
+          ],
+          "2": [
+            "CRS_BSC_40000100.png",
+            "CRS_BSC_40000101.png",
+            "CRS_BSC_40000102.png"
+          ],
+          "3": [
+            "CRS_BSA_40000902.png",
+            "CRS_BSB_40000100.png",
+            "CRS_BSB_40000101.png"
+          ]
+        },
+        "angry": {
+          "0": [
+            "CRS_BSC_40000400.png",
+            "CRS_BSC_40000401.png",
+            "CRS_BSC_40000402.png"
+          ],
+          "1": [
+            "CRS_BSB_40000800.png",
+            "CRS_BSB_40000801.png",
+            "CRS_BSB_40000802.png"
+          ],
+          "2": [
+            "CRS_BSB_40000700.png",
+            "CRS_BSB_40000701.png",
+            "CRS_BSB_40000702.png"
+          ],
+          "3": [
+            "CRS_BSB_40000300.png",
+            "CRS_BSB_40000301.png",
+            "CRS_BSB_40000302.png"
+          ]
+        },
+        "happy": {
+          "0": [
+            "CRS_BSC_40000300.png",
+            "CRS_BSC_40000301.png",
+            "CRS_BSC_40000302.png"
+          ],
+          "1": [
+            "CRS_BSB_40000600.png",
+            "CRS_BSB_40000601.png",
+            "CRS_BSB_40000602.png"
+          ]
+        },
+        "blush": {
+          "0": [
+            "CRS_BSC_40000200.png",
+            "CRS_BSC_40000201.png",
+            "CRS_BSC_40000202.png"
+          ],
+          "1": [
+            "CRS_BSB_40000900.png",
+            "CRS_BSB_40000901.png",
+            "CRS_BSB_40000902.png"
+          ]
+        },
+        "annoyed": {
+          "0": [
+            "CRS_BSB_40000500.png",
+            "CRS_BSB_40000501.png",
+            "CRS_BSB_40000502.png"
+          ],
+          "1": [
+            "CRS_BSB_40000400.png",
+            "CRS_BSB_40000401.png",
+            "CRS_BSB_40000402.png"
+          ]
+        },
+        "blink": {
+          "0": [
+            "CRS_BSB_40000200.png",
+            "CRS_BSB_40000201.png",
+            "CRS_BSB_40000202.png"
+          ]
+        }
+      }
+    }
+  }
+}

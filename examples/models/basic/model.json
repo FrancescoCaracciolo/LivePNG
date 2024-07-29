@@ -1,0 +1,17 @@
+{
+  "name": "basic",
+  "version": 1,
+  "styles": {
+    "default": {
+      "expressions": {
+        "idle": {
+          "0": [
+            "0.png",
+            "1.png",
+            "2.png"
+          ]
+        }
+      }
+    }
+  }
+}
