@@ -1,5 +1,5 @@
 from collections.abc import Callable
-import os, json, random, sys, io
+import os, json
 from threading import Semaphore
 import threading
 from pydub import AudioSegment
@@ -255,7 +255,24 @@ class LivePNG:
 
     # Speaking
 
-    def speak(self, wavfile: str, random_variant: bool = True, play_audio: bool = False, frame_rate:int = 10, interrupt_others:bool = True):
+    def speak(self, wavfile: str, random_variant: bool = True, play_audio: bool = False, frame_rate:int = 10, interrupt_others:bool = True, start_thread:bool=False):
+        """Play an audio file with lipsync. Not started on another thread.
+
+        Args:
+            wavfile (str): path to the .wav file
+            random_variant (bool, optional): Randomize variant when start speaking. Defaults to True.
+            play_audio (bool, optional): Play the audio. Defaults to False.
+            frame_rate (int, optional): FPS to play. Defaults to 10.
+            interrupt_others (bool, optional): If interrupt the speak function or wait for it. Defaults to True.
+            start_thread (bool, optional): If the lipsync must start on another thread. Defaults to False
+        """
+        if start_thread:
+            t = threading.Thread(target=self.__speak, args=(wavfile, random_variant, play_audio, frame_rate, interrupt_others))
+            t.start()
+        else:
+            self.__speak(wavfile, random_variant, play_audio, frame_rate, interrupt_others)
+    
+    def __speak(self, wavfile: str, random_variant: bool = True, play_audio: bool = False, frame_rate:int = 10, interrupt_others:bool = True):
         """Play an audio file with lipsync. Not started on another thread.
 
         Args:
@@ -362,7 +379,8 @@ class LivePNG:
         for image in images:
             if self.__in_threshold(amplitude, thresholds[image]):
                 return self.get_image_path(image)
-    
+        return self.get_image_path(images[0])    
+
     def __in_threshold(self, value: float, threshold: tuple) -> bool:
         """Check if a given float is in an interval
 
