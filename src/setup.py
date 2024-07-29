@@ -6,6 +6,8 @@ setup(
   version = '0.1.4',      
   license='GGPLv3',        
   description = 'LivePNG is a format to create avatars based on PNG images with lipsync support',
+  long_description=open('README.md').read(),
+  long_description_content_type='text/markdown',
   author = 'Francesco Caracciolo',
   author_email = 'francescocaracciolo78@gmail.com',
   url = 'https://github.com/francescocaracciolo/livepng',
