@@ -34,7 +34,7 @@ class LipSyncApp(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="LipSync Application")
         self.set_border_width(10)
-        self.set_default_size(400, 400)
+        self.set_default_size(1000, 1800)
         
         # Main vertical box
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -87,9 +87,14 @@ class LipSyncApp(Gtk.Window):
         self.precache_images()
         # Subscribe the callback to get frame updates
         self.model.subscribe_callback(self.update_image)
-        self.model.subscribe_observer(ModelObserver(self))
-        self.update_image(self.model.get_image_path(self.model.get_current_variant().get_images()[0]))
-    
+        self.observer = ModelObserver(self)
+        self.model.subscribe_observer(self.observer)
+        # Set initial values for the gui
+        self.update_image(self.model.get_current_image())
+        self.observer.on_style_change(self.model.get_current_style())
+        self.observer.on_expression_change(self.model.get_current_expression())
+        self.observer.on_variant_change(self.model.get_current_variant())
+
     def change_style(self, event):
         style = self.cycle_dict_values(self.model.get_styles(), str(self.model.get_current_style()))
         self.model.set_current_style(style)
@@ -105,7 +110,7 @@ class LipSyncApp(Gtk.Window):
     def speak(self, event):
         audios = os.listdir("audio")
         audio = os.path.join("audio", random.choice(audios))
-        t = threading.Thread(target=self.model.speak, args=(audio, True, False))
+        t = threading.Thread(target=self.model.speak, args=(audio, True, True))
         t.start()
 
     def update_image(self, image: str):
@@ -115,7 +120,7 @@ class LipSyncApp(Gtk.Window):
     def precache_images(self):
         self.cachedpixbuf = {}
         for image in self.model.get_images_list():
-            self.cachedpixbuf[image] = GdkPixbuf.Pixbuf.new_from_file_at_scale(filename=image, width=700,height=700, preserve_aspect_ratio=True)
+            self.cachedpixbuf[image] = GdkPixbuf.Pixbuf.new_from_file_at_scale(filename=image, width=1200,height=1200, preserve_aspect_ratio=True)
 
     @staticmethod
     def cycle_dict_values(dictionary, current_key):
