@@ -1,5 +1,5 @@
 from collections.abc import Callable
-import os, json, sys, io
+import os, json, random, sys, io
 from threading import Semaphore
 import threading
 from pydub import AudioSegment
@@ -14,6 +14,7 @@ from livepng.objects import Variant, Style, Expression
 from .validator import ModelValidator
 
 class LivePNG:
+    """Main class rapresenting a LivePNG model"""
     observers : list[LivePNGModelObserver]
     callbackfunctions : list[Callable]
 
@@ -27,6 +28,7 @@ class LivePNG:
     __request_interrupt : bool
 
     def __init__(self, path: str, output_type=FilepathOutput.LOCAL_PATH) -> None:
+        
         self.output_type = output_type
         self.path = path
         
@@ -51,8 +53,13 @@ class LivePNG:
         self.current_expression = self.current_style.get_default_expression()
         self.current_variant = self.current_expression.get_default_variant()
     
+    # Main getters and setters
+
     def get_default_style(self):
-        return self.styles[list(self.styles.keys())[0]]
+        if "default" in self.styles:
+            return self.styles["default"]
+        else:
+            return self.styles[list(self.styles.keys())[0]]
 
     def get_model_info(self):
         return self.model_info
@@ -66,18 +73,50 @@ class LivePNG:
         style = str(style)   
         if style in self.styles:
             self.current_style = self.styles[style]
+            self.set_current_expression()
         else:
             raise NotFoundException("The given style does not exist") 
-        
+        self.__update_frame()
+        self.__update_style()
+
     def get_expressions(self) -> dict[str, Expression]:
         return self.current_style.get_expressions()
     
     def get_current_expression(self) -> Expression:
         return self.current_expression
 
+    def set_current_expression(self, expression : str | Expression | None = None):
+        if expression is None:
+            self.current_expression = self.current_style.get_default_expression()
+        else:
+            expression = str(expression)
+            if expression in self.current_style.get_expressions():
+                self.current_expression = self.current_style.get_expressions()[expression]
+            else:
+                raise NotFoundException("Expression not found")
+        self.set_current_variant()
+        self.__update_expression()
+
+    def set_current_variant(self, variant : str | Variant | None = None):
+        if variant is None:
+            self.current_variant = self.current_expression.get_default_variant()
+        else:
+            variant = str(variant)
+            if variant in self.current_expression.get_variants():
+                self.current_variant = self.current_expression.get_variants()[variant]
+            else:
+                raise NotFoundException("Variant not found")
+        self.__update_frame()
+        self.__update_variant()
+
+    def randomize_variant(self, weights : dict[str | Variant, int] | None = None):
+        variant = self.current_expression.get_random_variant(weights)
+        self.set_current_variant(variant)
+
     def get_current_variant(self) -> Variant:
         return self.current_variant
 
+    # Get file path
     def get_file_path(self, style : str | Style, expression: str | Expression, variant: str | Variant, image: str, output_type: FilepathOutput | None = None) -> str:
         if output_type is None:
             output_type = self.output_type
@@ -98,11 +137,17 @@ class LivePNG:
     def get_image_path(self, img: str, output_type: FilepathOutput | None = None):
         return self.get_file_path(self.current_style, self.current_expression, self.current_variant, img, output_type)
 
-    def speak(self, wavfile: str, play_audio: bool = False, frame_rate:int = 10, interrupt_others:bool = True):
+    # Speaking
+
+    def speak(self, wavfile: str, random_variant: bool = True, play_audio: bool = False, frame_rate:int = 10, interrupt_others:bool = True):
         if interrupt_others:
             self.__request_interrupt = True
         self.__speak_lock.acquire()
         self.__request_interrupt = False
+        
+        if random_variant:
+            self.randomize_variant()
+        
         audio = AudioSegment.from_file(wavfile)
         # Calculate frames
         sample_rate = audio.frame_rate
@@ -115,9 +160,6 @@ class LivePNG:
         p = None
         t2 = None
         if play_audio:
-            # Prevent pyaudio from printing in console
-            sys.stdout = io.StringIO()
-            sys.stderr = io.StringIO()
             p = pyaudio.PyAudio()
             stream = p.open(format=p.get_format_from_width(audio.sample_width),
                         channels=audio.channels,
@@ -142,7 +184,6 @@ class LivePNG:
 
     def __update_images(self, frames: list, frame_rate:int = 10):
         for frame in frames:
-            # Handle interruption
             if self.__request_interrupt:
                 break 
             self.__update_frame(frame)
@@ -166,6 +207,8 @@ class LivePNG:
             if self.__in_threshold(amplitude, thresholds[image]):
                 return self.get_image_path(image)
 
+    # observers
+
     def subscribe_observer(self, observer : LivePNGModelObserver):
         self.observers.append(observer)
 
@@ -181,18 +224,35 @@ class LivePNG:
     def __in_threshold(self, value: float, threshold: tuple):
         return value >= threshold[0] and value  < threshold[1]
 
-    def __update_frame(self, frame : str):
+    def __update_frame(self, frame : str | None = None):
+        if frame is None:
+            frame = self.get_image_path(self.get_current_variant().get_images()[0])
+        # Notify observers
         for observer in self.observers:
             observer.on_frame_update(frame)
-
+        # Notify callback functions
         for callbackfunction in self.callbackfunctions:
             callbackfunction(frame)
 
+    def __update_expression(self):
+        for observer in self.observers:
+            observer.on_expression_change(self.current_expression)
+
+    def __update_variant(self):
+        for observer in self.observers:
+            observer.on_variant_change(self.current_variant)
+    
+    def __update_style(self):
+        for observer in self.observers:
+            observer.on_style_change(self.current_style)
+    
+
     def get_images_list(self) -> list[str]:
+        """Return a list of all the images in the model, for caching purposes"""
         images = []
         for style in self.styles:
             for expression in self.styles[style].get_expressions():
                 for variant in self.styles[style].get_expressions()[expression].get_variants():
                     for image in self.styles[style].get_expressions()[expression].get_variants()[variant].get_images():
-                        images.append(self.get_image_path(image))
+                        images.append(self.get_file_path(style, expression, variant, image))
         return images

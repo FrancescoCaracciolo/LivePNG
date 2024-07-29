@@ -1,5 +1,7 @@
 from livepng.constants import MOUTH_OPEN_THRESHOLD, MOUTH_CLOSED_THRESHOLD
+import random
 
+from livepng.exceptions import NotFoundException
 
 class Variant:
     name : str
@@ -51,7 +53,25 @@ class Expression:
     
     def __str__(self) -> str:
         return self.name
- 
+
+    def get_random_variant(self, weights: dict[str | Variant, int] | None = None) -> Variant:
+        if weights is None:
+            weights = {}
+            for variant in self.get_variants():
+                weights[variant] = 1
+        weights_sum = sum(weights.values())
+        elements = []
+        probabilities = []
+        for variant in weights:
+            if not str(variant) in self.get_variants():
+                raise NotFoundException("Variant not found: " + str(variant))
+            elements.append(str(variant))
+            probabilities.append(weights[str(variant)]/weights_sum)
+        
+        return self.variants[random.choices(elements, weights=probabilities, k=1)[0]]
+
+
+
 class Style:
     name : str
     expressions : dict[str, Expression]
