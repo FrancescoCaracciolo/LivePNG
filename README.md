@@ -1,6 +1,9 @@
 # LivePNG
 LivePNG is a format to create avatars based on PNG images.
 
+## Demo
+https://github.com/user-attachments/assets/efdddbcf-2850-4325-ab2c-0381f46072f1
+
 ## Examples
 The easiest way to understand the format is by looking at the `examples` folder.
 
@@ -15,6 +18,7 @@ Its properties are:
 A style is supposed to be a different style for a model, for example a clothes change or a different state.
 Every style has a name `style_name`, and is contained in the `assets/style_name` folder.
 Every style has at least one [expression](#Expressions).
+
 
 ### Expressions
 An expression is supposed to be a different expression for a model, for example a different face expression based on the mood or the emotions of a character.
