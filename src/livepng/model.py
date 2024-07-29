@@ -65,6 +65,14 @@ class LivePNG:
     
     # Main getters and setters
 
+    def get_styles(self) -> dict[str, Style]:
+        """Get the list of available styles
+
+        Returns:
+            dict[str, Style]: dictionary mapping names to styles
+        """
+        return self.styles
+    
     def get_default_style(self) -> Style:
         """Get the default style for the model
 
@@ -190,6 +198,16 @@ class LivePNG:
         """
         return self.current_variant
 
+    def get_current_image(self, output_type: FilepathOutput | None = None) -> str:
+        """Get the default image of the current variant
+
+        Args:
+            output_type (FilepathOutput | None, optional): File output type. Defaults to None.
+
+        Returns:
+            str: path of the image
+        """
+        return self.get_image_path(self.get_current_variant().get_images()[0], output_type)
     # Get file path
     def get_file_path(self, style : str | Style, expression: str | Expression, variant: str | Variant, image: str, output_type: FilepathOutput | None = None) -> str:
         """Get the path of a file
