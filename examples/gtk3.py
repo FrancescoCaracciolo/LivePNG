@@ -1,11 +1,9 @@
-from time import sleep
-from livepng import inspector
 from livepng.objects import Expression, Style, Variant
-from livepng.validator import ModelValidator
-from livepng.model import LivePNG, LivePNGModelObserver
+from livepng.observer import LivePNGModelObserver
+from livepng import LivePNG
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GdkPixbuf
+from gi.repository import Gtk, Gdk, GdkPixbuf, GLib
 import threading, os, random
 
 # Create the observer
@@ -107,11 +105,11 @@ class LipSyncApp(Gtk.Window):
     def speak(self, event):
         audios = os.listdir("audio")
         audio = os.path.join("audio", random.choice(audios))
-        t = threading.Thread(target=self.model.speak, args=(audio, True, True))
+        t = threading.Thread(target=self.model.speak, args=(audio, True, False))
         t.start()
 
     def update_image(self, image: str):
-        self.image.set_from_pixbuf(self.cachedpixbuf[image]) 
+        GLib.idle_add(self.image.set_from_pixbuf, self.cachedpixbuf[image]) 
         return True
 
     def precache_images(self):
