@@ -24,7 +24,7 @@ class Variant:
     def __str__(self) -> str:
         return self.name
 
-    def get_thresholds(self) -> dict[str, tuple[float]]:
+    def get_thresholds(self) -> dict[str, tuple[float, float]]:
         """Returns the thresholds for every image given an amplitude
 
         Returns:
@@ -33,7 +33,7 @@ class Variant:
         images = self.get_images()
         # if there is only one image always return it
         if len(images) == 1:
-            return [{images[0] : (0, 1)}]
+            return {images[0] : (0.0, 1.0)}
         # If there are multiple images calculate the thresholds
         thresholds = {}
         thresholds[images[0]] = (0, MOUTH_CLOSED_THRESHOLD) 
