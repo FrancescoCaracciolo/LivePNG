@@ -341,8 +341,24 @@ class LivePNG:
                 break 
             self.__update_frame(frame)
             sleep(1/frame_rate)
-        
-    def calculate_frames(self, sample_rate, audio_data, frame_rate=10) -> list[str]:
+    
+    def calculate_frames_from_audio(self, wavfile: str, frame_rate:int=10):
+        """Precalculate every frame for the model
+
+        Args:
+            wavfile (str): path to the wav file
+            frame_rate (int, optional): Frame rate. Defaults to 10.
+
+        Returns:
+            list[str]: List of the frames
+        """     
+        audio = AudioSegment.from_file(wavfile)
+        # Calculate frames
+        sample_rate = audio.frame_rate
+        audio_data = audio.get_array_of_samples()
+        return self.calculate_frames( sample_rate, audio_data, frame_rate=frame_rate)
+    
+    def calculate_frames(self, sample_rate, audio_data, frame_rate:int=10) -> list[str]:
         """Precalculate every frame for the model
 
         Args:
@@ -365,6 +381,29 @@ class LivePNG:
             indexes.append(mouth_image)
         return indexes
     
+    @staticmethod 
+    def calculate_amplitudes(sample_rate, audio_data, frame_rate:int=10) -> list[float]:
+        """Precalculate the amplitude for every frame of the model
+
+        Args:
+            sample_rate (_type_): Sample rate for the audio file
+            audio_data (_type_): Audio data
+            frame_rate (int, optional): Frame rate. Defaults to 10.
+
+        Returns:
+            list[int]: List of the amplitudes
+        """
+        indexes = []
+        for i in range(0, len(audio_data), sample_rate // frame_rate):
+            segment = audio_data[i:i + sample_rate // frame_rate]
+            absolute_segment = [abs(sample) for sample in segment]
+            mean = (sum(absolute_segment)/len(absolute_segment))
+            # Normalize the amplitude
+            amplitude = mean / 32768
+            # Get the frame from the given amplitude
+            indexes.append(amplitude)
+        return indexes
+
     def __get_mouth_position(self, amplitude: float) -> str:
         """Get the speaking frame for the given amplitude
 
