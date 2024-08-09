@@ -18,12 +18,15 @@ class LivePNG:
     observers : list[LivePNGModelObserver]
     callbackfunctions : list[Callable]
 
+    name : str
+    version : int
     styles : dict[str, Style] = {}
     current_style : Style
     current_expression : Expression
     current_variant : Variant
     output_type : FilepathOutput
     path : str
+
     __speak_lock : Semaphore
     __request_interrupt : bool
 
@@ -53,6 +56,8 @@ class LivePNG:
 
     def load_model(self):
         """Load the model"""
+        self.version = self.model_info["version"]
+        self.name = self.model_info["name"]
         for style in self.model_info["styles"]:
             stl = Style(style, self.model_info["styles"][style]["expressions"])
             self.styles[style] = stl
@@ -64,6 +69,14 @@ class LivePNG:
         self.current_variant = self.current_expression.get_default_variant()
     
     # Main getters and setters
+    
+    def get_name(self) -> str:
+        """Return model name"""
+        return self.name
+
+    def get_version(self) -> int:
+        """Return model version"""
+        return self.version
 
     def get_styles(self) -> dict[str, Style]:
         """Get the list of available styles
