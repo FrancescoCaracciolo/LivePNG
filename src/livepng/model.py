@@ -20,7 +20,7 @@ class LivePNG:
 
     name : str
     version : int
-    styles : dict[str, Style] = {}
+    styles : dict[str, Style]
     current_style : Style
     current_expression : Expression
     current_variant : Variant
@@ -58,6 +58,7 @@ class LivePNG:
         """Load the model"""
         self.version = self.model_info["version"]
         self.name = self.model_info["name"]
+        self.styles = {}
         for style in self.model_info["styles"]:
             stl = Style(style, self.model_info["styles"][style]["expressions"])
             self.styles[style] = stl
@@ -221,6 +222,7 @@ class LivePNG:
             str: path of the image
         """
         return self.get_image_path(self.get_current_variant().get_images()[0], output_type)
+    
     # Get file path
     def get_file_path(self, style : str | Style, expression: str | Expression, variant: str | Variant, image: str, output_type: FilepathOutput | None = None) -> str:
         """Get the path of a file
