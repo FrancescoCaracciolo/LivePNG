@@ -70,12 +70,13 @@ class LipSyncApp(Gtk.Window):
         self.button_change_variant.connect("clicked", self.change_variant)
         self.button_speak = Gtk.Button(label="Speak")
         self.button_speak.connect("clicked", self.speak)
-        
+        self.button_stop = Gtk.Button(label="Stop")
+        self.button_stop.connect("clicked", self.stop)
         hbox_bottom.pack_start(self.button_change_style, True, True, 0)
         hbox_bottom.pack_start(self.button_change_expression, True, True, 0)
         hbox_bottom.pack_start(self.button_change_variant, True, True, 0)
         hbox_bottom.pack_start(self.button_speak, True, True, 0)
-        
+        hbox_bottom.pack_start(self.button_stop, True, True, 0) 
 
         # Load the model and the images
         self.__load_model("models/kurisu/model.json")
@@ -98,6 +99,9 @@ class LipSyncApp(Gtk.Window):
     def change_style(self, event):
         style = self.cycle_dict_values(self.model.get_styles(), str(self.model.get_current_style()))
         self.model.set_current_style(style)
+
+    def stop(self, event):
+        self.model.stop()
 
     def change_expression(self, event):
         expression = self.cycle_dict_values(self.model.get_expressions(), str(self.model.get_current_expression()))
