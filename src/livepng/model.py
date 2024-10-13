@@ -339,6 +339,7 @@ class LivePNG:
                 stream.close()
                 p.terminate()
                 audio_thread.join()
+        self.__update_frame(self.get_current_image())
         # Speaking finished
         # Notify the threads and release the lock
         self.__notify_speak_finish(wavfile)
@@ -356,6 +357,10 @@ class LivePNG:
                 break 
             self.__update_frame(frame)
             sleep(1/frame_rate)
+   
+    def stop(self):
+        """Stop the speak function"""
+        self.__request_interrupt = True
     
     def calculate_frames_from_audio(self, wavfile: str, frame_rate:int=10):
         """Precalculate every frame for the model
